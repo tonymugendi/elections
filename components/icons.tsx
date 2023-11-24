@@ -19,7 +19,7 @@ export const PDFIcon = (props: any) => (
   </Icon>
 );
 
-export const AvertisLogo = (props: any) => (
+export const AvertisLogos = (props: any) => (
   <Icon viewBox="0 0 197 38" {...props}>
     <path
       fill="currentColor"
