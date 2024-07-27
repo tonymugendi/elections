@@ -2,7 +2,7 @@ import { Flex, Button, Box, Text } from '@chakra-ui/react';
 import Image from 'next/image';
 
 import React from 'react'
-import Voter from '../public/voter.png'
+import Voter from '../public/vote.jpeg'
 
 const Hero = ({ handleClick }: any) => {
 
@@ -29,9 +29,9 @@ const Hero = ({ handleClick }: any) => {
             height: '100%'
           }}
         />
-        <Box mt={5}>
+        {/* <Box mt={5}>
           <Image src='/avertis-logo.svg' width={197} height={36} alt='logo' />
-        </Box>
+        </Box> */}
 
         <Box mt='12vw'>
           <Text
@@ -40,7 +40,7 @@ const Hero = ({ handleClick }: any) => {
             fontWeight={700}
             lineHeight='normal'
           >
-            Elections <span style={{ color: '#000' }} >2023</span> Results
+            Elections <span style={{ color: '#000' }} >2024</span> Results
           </Text>
         </Box>
 
@@ -63,9 +63,10 @@ const Hero = ({ handleClick }: any) => {
           alt='Voter'
 
           style={{
-            width: '100%',
+            width: '600px',
             height: '100%',
-          }} />
+          }} 
+          />
       </Box>
 
     </Flex>

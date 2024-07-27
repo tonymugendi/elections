@@ -2,12 +2,14 @@ import Head from 'next/head'
 import { Inter } from 'next/font/google'
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
-import { Box, Button, Flex, Input, InputGroup, InputLeftElement, Link, Spacer, Text, VStack } from '@chakra-ui/react'
+import { TableContainer, Table, Thead, Tr, Th, Tbody, Td, Text, Skeleton, Link, Box, Flex, Button, Input, InputGroup, InputLeftElement } from '@chakra-ui/react'
 import { SearchIcon } from '@chakra-ui/icons';
 import Select from 'react-select'
 import Hero from '@/components/hero';
-import { useConstituency, useCounty, useResults, useWard } from '@/lib/hooks';
+import { useConstituency, useCounty, useResults, useResultsSummary, useWard } from '@/lib/hooks';
 import { filterStyles } from '@/components/filterStyles';
+import ReportedResults from '@/components/reportedResults';
+
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -20,33 +22,35 @@ const defaultFilters = {
 
 export default function Home() {
   const ref = useRef<null | HTMLDivElement>(null);
-  const [queryParams, setQueryParams] = useState('')
-  const { data } = useResults(queryParams)
-  const [filters, setFilters] = useState(defaultFilters);
-  const { county, countyLoading } = useCounty()
-  const { constituency, constituencyLoading } = useConstituency(filters.county_name && `?county_name=${filters.county_name.value}`)
-  const { ward, wardLoading } = useWard(filters.constituency_name && `?constituency_name=${filters.constituency_name.value}`)
+  // const [queryParams, setQueryParams] = useState('')
+  const { data, isLoading } = useResults()
+  const { summaryData } = useResultsSummary()
+  // const [filters, setFilters] = useState(defaultFilters);
+  // const { county, countyLoading } = useCounty()
+  // const { constituency, constituencyLoading } = useConstituency(filters.county_name && `?county_name=${filters.county_name.value}`)
+  // const { ward, wardLoading } = useWard(filters.constituency_name && `?constituency_name=${filters.constituency_name.value}`)
 
 
-  const countyOptions = county?.map(
-    ({ county_name }) => ({
-      value: county_name,
-      label: county_name
-    })
-  );
 
-  const constituencyOptions = constituency?.map(
-    ({ constituency_name }) => ({
-      value: constituency_name,
-      label: constituency_name
-    })
-  );
-  const wardOptions = ward?.map(
-    ({ ward_name }) => ({
-      value: ward_name,
-      label: ward_name
-    })
-  );
+  // const countyOptions = county?.map(
+  //   ({ county_name }) => ({
+  //     value: county_name,
+  //     label: county_name
+  //   })
+  // );
+
+  // const constituencyOptions = constituency?.map(
+  //   ({ constituency_name }) => ({
+  //     value: constituency_name,
+  //     label: constituency_name
+  //   })
+  // );
+  // const wardOptions = ward?.map(
+  //   ({ ward_name }) => ({
+  //     value: ward_name,
+  //     label: ward_name
+  //   })
+  // );
 
 
 
@@ -58,31 +62,31 @@ export default function Home() {
 
   })
 
-  const onChange = ({ key, value }) => {
-    if (queryParams) {
-      setQueryParams(`${queryParams}&${key}=${value?.value}`)
-    } else {
-      setQueryParams(`?${key}=${value?.value}`)
-    }
+  // const onChange = ({ key, value }) => {
+  //   if (queryParams) {
+  //     setQueryParams(`${queryParams}&${key}=${value?.value}`)
+  //   } else {
+  //     setQueryParams(`?${key}=${value?.value}`)
+  //   }
 
-    setFilters({ ...filters, [key]: value });
-  };
+  //   setFilters({ ...filters, [key]: value });
+  // };
 
-  const onSearch = (e: any) => {
-    setQueryParams(`?search=${e}`)
+  // const onSearch = (e: any) => {
+  //   setQueryParams(`?search=${e}`)
 
 
-    if (queryParams) {
-      setQueryParams(`${queryParams}&search=${e}`)
-    } else {
-      setQueryParams(`?search=${e}`)
-    }
-  };
+  //   if (queryParams) {
+  //     setQueryParams(`${queryParams}&search=${e}`)
+  //   } else {
+  //     setQueryParams(`?search=${e}`)
+  //   }
+  // };
 
-  const clearFilters = () => {
-    setFilters(defaultFilters);
-    setQueryParams('')
-  }
+  // const clearFilters = () => {
+  //   setFilters(defaultFilters);
+  //   setQueryParams('')
+  // }
 
   return (
     <>
@@ -100,7 +104,7 @@ export default function Home() {
           ref={ref}
           p={{ base: '0px 5px 0px 5px', lg: '0px 140px 0px 140px' }}
         >
-          <Flex
+          {/* <Flex
             gap={2}
             pt='30px'
             direction={{ base: 'column', md: 'row' }}
@@ -157,10 +161,10 @@ export default function Home() {
             />
             <Button onClick={clearFilters} variant='ghost' color='#0052FE'>Reset</Button>
 
-          </Flex>
+          </Flex> */}
           <Box>
 
-            {data?.map((result: any, index) => (
+            {/* {data?.map((result: any, index) => (
               <Flex
                 alignItems='center'
                 my={4}
@@ -191,9 +195,66 @@ export default function Home() {
                   View Results
                 </Link>
               </Flex>
-            ))}
+            ))} */}
 
+            <Flex>
+              <TableContainer
+                flex={1} mr={8}
+                bgColor='white'
+                p={4}
+                borderRadius="13px"
+              >
 
+                <Table variant='simple'>
+                  <Thead>
+                    <Tr>
+                      <Th color="#B5B7C0">Polling Center</Th>
+                      <Th isNumeric color="#B5B7C0">Polling Center Code</Th>
+                      <Th isNumeric color="#B5B7C0">Results</Th>
+                      <Th isNumeric color="#B5B7C0">Winners Results</Th>
+                    </Tr>
+                  </Thead>
+                  <Tbody>
+
+                    {isLoading ? Array(30).fill({}).map((_item, index) => (
+                      <Tr key={index}>
+                        <Td><Skeleton height='20px' /></Td>
+                        <Td><Skeleton height='20px' /></Td>
+                        <Td><Skeleton height='20px' /></Td>
+                        <Td><Skeleton height='20px' /></Td>
+                        <Td><Skeleton height='20px' /></Td>
+                      </Tr>
+                    )) :
+                      data.map((item) => (
+                        <Tr key={item.polling_center_code}>
+                          <Td>{item.polling_center_name}</Td>
+                          <Td isNumeric>{item.polling_center_code}</Td>
+                          <Td isNumeric color="#179748" fontWeight="600">
+                            <Link
+                              href={item.report_page_link}
+                              isExternal
+                            >
+                              View
+                            </Link>
+                          </Td>
+                          <Td isNumeric color="#179748" fontWeight="600">
+                            <Link
+                              href={item.results_page_link}
+                              isExternal
+                            >
+                              View
+                            </Link>
+                          </Td>
+                        </Tr>
+                      ))
+                    }
+                  </Tbody>
+                </Table>
+              </TableContainer>
+              {/* <Box display={{ base: "none", md: "block" }}>
+                <ReportedResults resultsData={summaryData} />
+              </Box> */}
+            </Flex>
 
           </Box>
 

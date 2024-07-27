@@ -2,13 +2,19 @@ import useSWR from "swr";
 import fetcher from "./fetcher";
 
 export const useResults = (params?: string) => {
-  const { data, error, isLoading } = useSWR(
-    params ? `voting/results${params}` : "voting/results",
-    fetcher
-  );
+  const { data, error, isLoading } = useSWR("results", fetcher);
 
   return {
     data,
+    isLoading,
+    isError: error,
+  };
+};
+export const useResultsSummary = (params?: string) => {
+  const { data, error, isLoading } = useSWR("county-summary", fetcher);
+
+  return {
+    summaryData: data,
     isLoading,
     isError: error,
   };
@@ -25,7 +31,10 @@ export const useCounty = () => {
 };
 
 export const useConstituency = (params?: string) => {
-  const { data, error, isLoading } = useSWR(params ? `constituency${params}` : 'constituency', fetcher);
+  const { data, error, isLoading } = useSWR(
+    params ? `constituency${params}` : "constituency",
+    fetcher
+  );
 
   return {
     constituency: data,
@@ -35,7 +44,10 @@ export const useConstituency = (params?: string) => {
 };
 
 export const useWard = (params?: string) => {
-  const { data, error, isLoading } = useSWR(params ? `ward${params}` : 'ward', fetcher);
+  const { data, error, isLoading } = useSWR(
+    params ? `ward${params}` : "ward",
+    fetcher
+  );
 
   return {
     ward: data,
