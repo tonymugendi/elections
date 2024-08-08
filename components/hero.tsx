@@ -2,7 +2,8 @@ import { Flex, Button, Box, Text } from '@chakra-ui/react';
 import Image from 'next/image';
 
 import React from 'react'
-import Voter from '../public/vote.jpeg'
+import Voter from '../public/maasai.jpg'
+import Logo from '../public/logo.png'
 
 const Hero = ({ handleClick }: any) => {
 
@@ -13,9 +14,9 @@ const Hero = ({ handleClick }: any) => {
         px={10}
         overflow="hidden"
         position="relative"
-        bgColor="#0052FE"
+        bgColor="#ffffff"
       >
-        <Image
+        {/* <Image
           src="/bg-image.png"
           width={200}
           height={300}
@@ -28,10 +29,10 @@ const Hero = ({ handleClick }: any) => {
             width: '100%',
             height: '100%'
           }}
-        />
-        {/* <Box mt={5}>
-          <Image src='/avertis-logo.svg' width={197} height={36} alt='logo' />
-        </Box> */}
+        /> */}
+        <Box mt={5}>
+          <Image src={Logo} width={197} height={36} alt='logo' />
+        </Box>
 
         <Box mt='12vw'>
           <Text
@@ -40,15 +41,15 @@ const Hero = ({ handleClick }: any) => {
             fontWeight={700}
             lineHeight='normal'
           >
-            Elections <span style={{ color: '#000' }} >2024</span> Results
+            <span style={{ color: '#424242' }}>Elections <span style={{ color: '#f39253' }} >2024</span> Results</span>
           </Text>
         </Box>
 
         <Box mt={50}>
           <Button
-            color='#0052FE'
+            color='white'
             borderRadius='100px'
-            bgColor='white'
+            bgColor='#0052FE'
             fontSize={{ lg: '1.2vw' }}
             p={{ md: '1.2vw 1.2vw' }}
             onClick={handleClick}
@@ -61,12 +62,11 @@ const Hero = ({ handleClick }: any) => {
         <Image
           src={Voter}
           alt='Voter'
-
           style={{
             width: '600px',
             height: '100%',
-          }} 
-          />
+          }}
+        />
       </Box>
 
     </Flex>
